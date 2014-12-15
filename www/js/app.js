@@ -1,4 +1,4 @@
-angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova','shoppinglist.admob'])
+angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova','shoppinglist.admob','openfb'])
 
 	.config(function ($stateProvider, $urlRouterProvider) {
 	    $stateProvider
@@ -218,12 +218,17 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	    }
 	  }
 	})
-    .run(function ($rootScope, $state, $window, App, $ionicPlatform, $ionicSideMenuDelegate, AdMob) {
+    .run(function ($rootScope, $state, $window, App, $ionicPlatform, $ionicSideMenuDelegate, AdMob, OpenFB) {
     	//window.localStorage.removeItem('user');
     	//window.localStorage.removeItem('shoppinglist');
     	//window.localStorage.removeItem('deleted_shoppinglist');
     	//window.localStorage.removeItem('deleted_items');
     	
+    	OpenFB.init('378306805627739');
+    	
+    	$rootScope.$on('OAuthException', function() {
+            $state.go('app.login');
+        });
     	
     	$ionicPlatform.registerBackButtonAction(function () {
     	    $ionicSideMenuDelegate.toggleLeft();

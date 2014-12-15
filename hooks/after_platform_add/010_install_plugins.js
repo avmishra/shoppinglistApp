@@ -9,7 +9,8 @@ var pluginlist = [
     "org.apache.cordova.device",
     "org.apache.cordova.dialogs",
     "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
-    "com.google.cordova.admob"
+    "com.google.cordova.admob",
+    "org.apache.cordova.inappbrowser"
 ];
  
 // no need to configure below

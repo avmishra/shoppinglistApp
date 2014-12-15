@@ -151,7 +151,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             }
         };
     })
-    .controller('LoginController', function ($rootScope, $scope, $state, RemoteService, App) {
+    .controller('LoginController', function ($rootScope, $scope, $state, RemoteService, App, OpenFB) {
     	var userDetails = App.getUserDetails();
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -230,8 +230,18 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         	$scope.userForm = {email:userDetails.email};
     		$scope.errorBlockShow = true;
     	}
+        
+        $scope.facebookLogin = function () {
+            OpenFB.login('email,read_stream,publish_stream').then(
+                function () {
+                    //$location.path('/app/person/me/feed');
+                	console.log('test');
+                },
+                function () {
+                    alert('OpenFB login failed');
+                });
+        };
     })
-    
     .controller('SignupController', function ($scope, $state, RemoteService, App) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
