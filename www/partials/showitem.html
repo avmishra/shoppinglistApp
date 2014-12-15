@@ -1,0 +1,260 @@
+<ion-view>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon" ng-click="showModal()">
+            <i class="icon ion-plus-round">&nbsp; Add Item</i>
+        </button>
+    </ion-nav-buttons>
+
+    <ion-content has-header="true" padding="true" class="show-item">
+        <ion-list>
+            <ion-item ng-repeat="item in shoppingLists[shoppingIndex].items" item="item">
+                <div>
+                    <div class="col col-10 flot-lt">
+                        <span ng-click="picked(item,$index)" id="picked_{{$index}}">
+                            <i class="icon {{(item.picked == 1) ? 'ion-ios7-checkmark' : 'ion-ios7-circle-outline'}} custom-icon-pick"></i>
+                        </span>
+                    </div>
+                    <div class="col col-90 flot-lt">
+                    	{{item.product_name}}
+                        <span id="badge_{{$index}}" class="badge {{(item.picked == 1) ? 'badge-balanced' : 'badge-assertive'}}">{{item.quantity}} {{units[item.unit]}}</span>
+                        <div class="item-date">{{item.created_at}}</div> 
+                        <div class="clear-both notes">{{item.notes}}</div>
+                    </div>
+                    
+                </div>   
+                <ion-option-button class="button-royal" ng-click="edit(item, $index)">
+                    <i class="icon ion-edit"></i>
+                </ion-option-button>
+                <ion-option-button class="button-assertive" ng-click="showConfirm($index)">
+                    <i class="icon ion-close-circled"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
+        <div class="card" ng-show="!shoppingLists[shoppingIndex].items.length" >
+		    <div class="item item-text-wrap">
+			   No item added in this shopping. Please click on above right icon to add new item.
+		    </div>
+		</div>
+    </ion-content>
+</ion-view>
+
+<script id="add-new-item.html" type="text/ng-template">
+	<form name="addItemFrm" ng-submit="addItem(addItemFrm, 1)">
+        <div class="modal">
+        <!-- Modal header bar -->
+        <ion-header-bar class="bar-royal">
+            <h1 class="title">Add item</h1>
+            <a class="button button-icon" ng-click="addItem(addItemFrm, 0)"><i class="icon ion-checkmark-round"></i> Save</a>
+            <a class="button button-icon" ng-click="hideModal()"><i class="icon ion-close-round"></i> Close</a>
+        </ion-header-bar>
+        <!-- Modal content area -->
+        <ion-content>
+            
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Item</span>
+                        <input required name="product_name" type="text" ng-model="item.product_name" placeholder="Please enter item name">
+                        <div class="error-container" ng-show="addItemFrm.quantity.$invalid && submitted">
+		                    <small class="error" ng-show="addItemFrm.product_name.$error.required">
+		                        Please enter item name.
+		                    </small>
+		                </div>
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Quantity</span>
+                        <input required name="quantity" type="number" min="1" ng-minlength="1" ng-model="item.quantity" placeholder="Please enter quantity">
+                        <div class="error-container" ng-show="addItemFrm.quantity.$invalid && submitted">
+		                    <small class="error" ng-show="addItemFrm.quantity.$error.required">
+		                        Please enter numaric value.
+		                    </small>
+		                </div>
+                    </label>
+                    <div class="item item-divider"> 
+                    	Unit
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="pk" ng-model="item.unit">
+                                <div class="item-content">
+                                Packet
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="kg" ng-model="item.unit">
+                                <div class="item-content">
+                                KG
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="gm" ng-model="item.unit">
+                                <div class="item-content">
+                                Gram
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="lt" ng-model="item.unit">
+                                <div class="item-content">
+                                    Liter
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="ml" ng-model="item.unit">
+                                <div class="item-content">
+                                    ML
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="un" ng-model="item.unit">
+                                <div class="item-content">
+                                    Unit
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Notes</span>
+                        <input type="text" ng-model="item.notes">
+                    </label>
+                </div>
+                <div class="padding">
+                    <button type="submit" class="button button-block button-balanced">Save & Add more</button>
+                </div>
+           
+        </ion-content>
+        </div>
+        </form>
+    </script>
+    
+    <script id="edit-item.html" type="text/ng-template">
+	<form name="editItemFrm" ng-submit="editShoppingItem(editItemFrm)">
+        <div class="modal">
+        <!-- Modal header bar -->
+        <ion-header-bar class="bar-royal">
+            <h1 class="title">Edit item</h1>
+            <a class="button button-icon" ng-click="editShoppingItem(editItemFrm)"><i class="icon ion-checkmark-round"></i></a>
+            <a class="button button-icon" ng-click="hideEditModal()"><i class="icon ion-close-round"></i></a>
+        </ion-header-bar>
+        <!-- Modal content area -->
+        <ion-content>
+            
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Item</span>
+                        <input required name="product_name" type="text" ng-model="editItem.product_name" placeholder="Please enter item name">
+                        <div class="error-container" ng-show="editItemFrm.quantity.$invalid && submitted">
+		                    <small class="error" ng-show="editItemFrm.product_name.$error.required">
+		                        Please enter item name.
+		                    </small>
+		                </div>
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Quantity</span>
+                        <input required name="quantity" type="number" min="1" ng-minlength="1" ng-model="editItem.quantity" placeholder="Please enter quantity">
+                        <div class="error-container" ng-show="editItemFrm.quantity.$invalid && submitted">
+		                    <small class="error" ng-show="editItemFrm.quantity.$error.required">
+		                        Please enter numaric value.
+		                    </small>
+		                </div>
+                    </label>
+                    <div class="item item-divider"> 
+                    	Unit
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="pk" ng-model="editItem.unit">
+                                <div class="item-content">
+                                Packet
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="kg" ng-model="editItem.unit">
+                                <div class="item-content">
+                                KG
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <label class="item item-radio">
+                                <input type="radio" name="unit" value="gm" ng-model="editItem.unit">
+                                <div class="item-content">
+                                Gram
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="lt" ng-model="editItem.unit">
+                                <div class="item-content">
+                                    Liter
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="ml" ng-model="editItem.unit">
+                                <div class="item-content">
+                                    ML
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                        <div class="col">
+                             <label class="item item-radio">
+                                <input type="radio" name="unit" value="un" ng-model="editItem.unit">
+                                <div class="item-content">
+                                    Unit
+                                </div>
+                                <i class="radio-icon ion-checkmark"></i>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Notes</span>
+                        <input type="text" ng-model="editItem.notes">
+                    </label>
+                </div>
+           
+        </ion-content>
+        </div>
+        </form>
+    </script>

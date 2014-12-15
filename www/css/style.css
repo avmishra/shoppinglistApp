@@ -1,1 +1,88 @@
 /* Empty. Add your own CSS if you like */
+.custom-icon {
+    font-size: 20px;
+}
+
+.custom-icon-pick {
+    font-size: 26px;
+}
+
+.middle-image
+{
+    margin-top:10%;
+    text-align: center;
+}
+
+.middle-icon
+{
+    margin-top:2%;
+    text-align: center;
+}
+
+.middle-projectname
+{
+    text-align: center;
+    color: #FFF217;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: customfont;
+    src: url(fonts/YanoneKaffeesatz-Regular.ttf);
+    font-size:12px;
+}
+
+body {
+    font-family: customfont;
+}
+.item.active, .item.activated, .item-complex.active .item-content, .item-complex.activated .item-content {
+    border-color: #ccc;
+    background-color: #D9D9D9;
+}
+
+.show-item .item-content{
+    padding: 5px 5px 5px 5px;
+}
+
+.flot-lt {
+    float: left;
+}
+
+.flot-rt {
+    float: right;
+}
+
+.clear-both {
+    clear: both;
+}
+.notes{
+    font-style: italic;
+    color: #aaa;
+    font-size: 14px;
+}
+.errMsg {
+    color:red;
+}
+
+.item-date {
+    font-style: italic;
+    color: #8A6DE9;
+    font-size: 13px;
+}
+.item-item {
+    font-size: 18px;
+}
+.button {
+    font-family: customfont;
+    font-size: 18px;
+}
+input {
+    font-family: customfont;
+}
+.exit {
+    font-weight:bold;
+    color:#8A6DE9;
+}
+.logout {
+    color:red;
+}

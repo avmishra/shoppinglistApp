@@ -1,0 +1,52 @@
+<ion-side-menus>
+    <ion-pane ion-side-menu-content>
+        <ion-nav-bar class="bar-royal">
+            <ion-nav-back-button class="button-clear">
+                <i class="icon ion-ios7-arrow-left"></i> Back
+            </ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view name="shoppingContent"></ion-nav-view>
+    </ion-pane>
+    <ion-side-menu side="left">
+        <header class="bar bar-header bar-assertive">
+            <img src="img/shopping-cart-32.png">
+            <h1 class="title">Shoppinglist</h1>
+        </header>
+        <ion-content class="has-header">
+            <ion-list>
+                <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.listing">
+                    <i class="icon ion-clipboard custom-icon"></i>
+                    &nbsp;&nbsp;Home
+                </ion-item>
+                <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.sync" ng-show="logged_in">
+	                <i class="icon ion-arrow-swap custom-icon"></i>
+	                &nbsp;&nbsp;Sync on server
+	            </ion-item>
+	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.changepassword" ng-show="logged_in">
+                    <i class="icon ion-locked custom-icon"></i>
+                    &nbsp;&nbsp;Change password
+                </ion-item>
+                <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="exitApp()">
+                    <i class="icon ion-power custom-icon"></i>
+                    &nbsp;&nbsp;<span class="exit">Exit</span>
+                </ion-item>
+                
+                <div class="item item-divider">
+                   &nbsp;
+                </div>
+                <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="showConfirm()" ng-show="logged_in">
+	                <i class="icon ion-log-out custom-icon"></i>
+	                &nbsp;&nbsp;<span class="logout">Logout</span> <span style="font-size:13px">({{userName}})</span>
+	            </ion-item>
+	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.aboutus">
+	                <i class="icon ion-ios7-people custom-icon"></i>
+	                &nbsp;&nbsp;About Shoppinglist
+	            </ion-item>
+	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.help" style="display:none">
+	                <i class="icon ion-help custom-icon"></i>
+	                &nbsp;&nbsp;Help
+	            </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
