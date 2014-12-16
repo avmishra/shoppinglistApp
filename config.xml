@@ -2,7 +2,7 @@
 <widget id="com.avmishra.shoppinglistapp" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>shoppinglistApp</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Make your shopping list easy without paper and pen. No need to remember things when going to shopping. Just create Shopping and add items immediately when you remembered it. 	
     </description>
 	<author email="avmishra.org@gmail.com" href="http://www.avmishra.org">
       Shoppinglist Team
