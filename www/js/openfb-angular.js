@@ -15,7 +15,6 @@ angular.module('openfb', [])
 
         // By default we store fbtoken in sessionStorage. This can be overriden in init()
             tokenStore = window.sessionStorage,
-
             fbAppId,
             oauthRedirectURL,
 
@@ -28,7 +27,6 @@ angular.module('openfb', [])
 
         // Used in the exit event handler to identify if the login has already been processed elsewhere (in the oauthCallback function)
             loginProcessed;
-
         document.addEventListener("deviceready", function () {
             runningInCordova = true;
         }, false);
@@ -82,7 +80,6 @@ angular.module('openfb', [])
                     }
                 }
             }
-
             loginWindow = window.open(FB_LOGIN_URL + '?client_id=' + fbAppId + '&redirect_uri=' + oauthRedirectURL +
                 '&response_type=token&display=popup&scope=' + fbScope, '_blank', 'location=no');
 
@@ -167,7 +164,6 @@ angular.module('openfb', [])
                 params = obj.params || {};
 
             params['access_token'] = tokenStore['fbtoken'];
-
             return $http({method: method, url: 'https://graph.facebook.com' + obj.path, params: params})
                 .error(function(data, status, headers, config) {
                     if (data.error && data.error.type === 'OAuthException') {

@@ -14,14 +14,24 @@ angular.module('shoppinglist.service', [])
                         syncDataFromServer: syncDataFromServer,
                         verifyEmail: verifyEmail,
                         sendForgotPassCode: sendForgotPassCode,
-                        forgotpassword: forgotpassword
+                        forgotpassword: forgotpassword,
+                        facebookSignup: facebookSignup
                     });
                     
                     function buildUrl(pageName) {
-                    	//var host = "http://192.168.56.1/avmishra/shoppinglist/web/app_dev.php/v1/";
-                    	var host = "";
+                    	var host = "http://192.168.0.105/avmishra/shoppinglist/web/app_dev.php/v1/";
+                    	//var host = "";
                     	//console.log(host + pageName);
                     	return host + pageName;
+                    }
+                    
+                    function facebookSignup(signupData) {
+                    	var request = $http({
+                            method: "post",
+                            url: buildUrl("users/facebook_signup"),
+                            data: signupData
+                        });
+                    	return(request.then(handleSuccess, handleError));
                     }
                     
                     function sendForgotPassCode(email) {

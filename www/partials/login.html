@@ -33,15 +33,27 @@
                     </div>
                 </label>
                 <div class="button-bar">
-                    <button type="submit" class="button button-block button-balanced">Sign In</button>
+                    <button type="submit" class="button button-block button-balanced">
+                    <i class="icon ion-unlocked"></i>&nbsp;&nbsp;&nbsp;	Login
+                    </button>
                 </div>
             </div>
         </form>
         <br>
         <br>
-        <button ng-show="noUserExist" ui-sref="app.signup" class="button button-full button-positive">
-            Sign Up
-        </button>
+        <div class="row">
+		  	<div class="col col-50">
+				<button class="button button-block button-positive" ng-click="facebookLogin()">
+		           <i class="icon ion-social-facebook"></i>&nbsp;&nbsp;&nbsp;Login with facebook
+		        </button>
+			</div>
+		  <div class="col"></div>
+		  <div class="col col-50">
+		  		<button ng-show="noUserExist" ui-sref="app.signup" class="button button-block button-balanced">
+            		<i class="icon ion-person-add"></i>&nbsp;&nbsp;&nbsp;Sign Up
+        		</button>
+		  </div>
+		</div>
         <button ui-sref="app.forgotpassword" class="button button-full button-assertive">
             Forgot Password?
         </button>
