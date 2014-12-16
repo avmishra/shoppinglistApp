@@ -151,7 +151,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             }
         };
     })
-    .controller('LoginController', function ($rootScope, $scope, $state, RemoteService, App) {
+    .controller('LoginController', function ($rootScope, $scope, $state, $location, RemoteService, App, OpenFB) {
     	var userDetails = App.getUserDetails();
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -172,6 +172,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             	App.showLoading('Please wait');
                 RemoteService.login($scope.userForm.email, $scope.userForm.password).then(
             		function(responseData) {
+            			console.log(responseData);
                 		jsonResponse = angular.fromJson(JSON.parse(responseData));
                 		if (jsonResponse.status != "200") {
                 			$scope.errorMsg = stackMessages(jsonResponse.message);
@@ -230,12 +231,72 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         	$scope.userForm = {email:userDetails.email};
     		$scope.errorBlockShow = true;
     	}
+        
+        $scope.facebookLogin = function () {
+            OpenFB.login('email,read_stream,publish_stream').then(
+                function (data) {
+                	OpenFB.get('/me').success(function (user) {
+                		App.showLoading('Please wait');
+                		RemoteService.facebookSignup(user).then(
+                        	function(responseData) {
+                        		jsonResponse = angular.fromJson(JSON.parse(responseData));
+                        		if (jsonResponse.status != "200") {
+                        			$scope.errorMsg = stackMessages(jsonResponse.message);
+                        			$scope.errorBlockShow = true;
+                        			App.hideLoading();
+                        		} else {
+                        			jsonResponse.data['logged_in'] = 1;
+                        			jsonResponse.data['status'] = 1;
+                        			App.removeUserDetails();
+                        			App.deleteAllShoppinglist();
+                        			App.saveUserDetails(jsonResponse.data);
+                        			userDetails = App.getUserDetails();
+                        			
+                        			App.hideLoading();
+                        			App.showLoading('Syncing data');
+                        			// if local storage is empty then get Data from server
+                            		RemoteService.getAllShoppinglistFromServer(userDetails['api_key']).then(
+                                    	function(responseData) {
+                                    		jsonResponse = angular.fromJson(JSON.parse(responseData));
+                                    		if (jsonResponse.status != "200") {
+                                    			App.showToast('Data did not sync. Please try again later.', 'long', 'center');
+                                    		} else {
+                                    			for(key in jsonResponse.data) {
+                                    				$scope.shoppingLists.unshift(jsonResponse.data[key]);
+                                    			}
+                                    			App.saveShoppinglist($scope.shoppingLists);
+                                    		}
+                                    		App.hideLoading();
+                                    		$rootScope.$broadcast('refreshData');
+                                    		$state.go('app.loading');
+                                    	},
+                                    	function( errorMessage ) {
+                                    		console.warn( errorMessage );
+                                    		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                                    		App.hideLoading();
+                                    		$state.go('app.loading');
+                                    	}
+                                    );
+                        		}
+                        	},
+                        	function( errorMessage ) {
+                        		console.warn( errorMessage );
+                        		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                        		App.hideLoading();
+                        	}
+                        );
+                    });
+                },
+                function () {
+                	$scope.errorMsg.push({msg:'Facebook login failed.'});
+            		$scope.errorBlockShow = true;
+                });
+        };
     })
-    
     .controller('SignupController', function ($scope, $state, RemoteService, App) {
+    	
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
-    	
         $scope.loginPage = function() {
            $state.go('app.login');
         };
