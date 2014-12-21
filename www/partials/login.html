@@ -39,21 +39,25 @@
                 </div>
             </div>
         </form>
-        <br>
-        <br>
         <div class="row">
-		  	<div class="col col-50">
+		  	<div class="col">
 				<button class="button button-block button-positive" ng-click="facebookLogin()">
-		           <i class="icon ion-social-facebook"></i>&nbsp;&nbsp;&nbsp;Login with facebook
-		        </button>
+	           		Login with&nbsp;&nbsp;&nbsp;	<i class="icon ion-social-facebook"></i>
+	         	</button>
 			</div>
-		  <div class="col"></div>
-		  <div class="col col-50">
-		  		<button ng-show="noUserExist" ui-sref="app.signup" class="button button-block button-balanced">
-            		<i class="icon ion-person-add"></i>&nbsp;&nbsp;&nbsp;Sign Up
-        		</button>
-		  </div>
+		  	<div class="col">
+				<button class="button button-block button-assertive" ng-click="googleLogin()">
+		           Login with&nbsp;&nbsp;&nbsp;	<i class="icon ion-social-googleplus"></i>
+		         </button>
+			</div>
 		</div>
+         <div class="button-bar">
+             <button ng-show="noUserExist" ui-sref="app.signup" class="button button-block button-balanced">
+           		<i class="icon ion-person-add"></i>&nbsp;&nbsp;&nbsp;Sign Up
+       		</button>
+         </div>
+         <br/>
+         <br/>
         <button ui-sref="app.forgotpassword" class="button button-full button-assertive">
             Forgot Password?
         </button>
