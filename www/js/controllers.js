@@ -151,7 +151,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             }
         };
     })
-    .controller('LoginController', function ($rootScope, $scope, $state, $location, RemoteService, App, OpenFB) {
+    .controller('LoginController', function ($rootScope, $scope, $state, $location, $http, RemoteService, App, OpenFB, $cordovaOauth) {
     	var userDetails = App.getUserDetails();
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -232,58 +232,62 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
     		$scope.errorBlockShow = true;
     	}
         
+        var signupResponseSuccess = function(responseData) {
+        	jsonResponse = angular.fromJson(JSON.parse(responseData));
+    		if (jsonResponse.status != "200") {
+    			$scope.errorMsg = stackMessages(jsonResponse.message);
+    			$scope.errorBlockShow = true;
+    			App.hideLoading();
+    		} else {
+    			jsonResponse.data['logged_in'] = 1;
+    			jsonResponse.data['status'] = 1;
+    			App.removeUserDetails();
+    			App.deleteAllShoppinglist();
+    			App.saveUserDetails(jsonResponse.data);
+    			userDetails = App.getUserDetails();
+    			
+    			App.hideLoading();
+    			App.showLoading('Syncing data');
+    			// if local storage is empty then get Data from server
+        		RemoteService.getAllShoppinglistFromServer(userDetails['api_key']).then(
+                	function(responseData) {
+                		jsonResponse = angular.fromJson(JSON.parse(responseData));
+                		if (jsonResponse.status != "200") {
+                			App.showToast('Data did not sync. Please try again later.', 'long', 'center');
+                		} else {
+                			for(key in jsonResponse.data) {
+                				$scope.shoppingLists.unshift(jsonResponse.data[key]);
+                			}
+                			App.saveShoppinglist($scope.shoppingLists);
+                		}
+                		App.hideLoading();
+                		$rootScope.$broadcast('refreshData');
+                		$state.go('app.loading');
+                	},
+                	function( errorMessage ) {
+                		console.warn( errorMessage );
+                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.hideLoading();
+                		$state.go('app.loading');
+                	}
+                );
+    		}
+        };
+        
+        var signupResponseError = function() {
+        	App.showToast('Network error occurred. Please try again.', 'long', 'center');
+    		App.hideLoading();
+        };
+        
         $scope.facebookLogin = function () {
             OpenFB.login('email,read_stream,publish_stream').then(
                 function (data) {
+                	App.showLoading('Please wait');
                 	OpenFB.get('/me').success(function (user) {
-                		App.showLoading('Please wait');
-                		RemoteService.facebookSignup(user).then(
-                        	function(responseData) {
-                        		jsonResponse = angular.fromJson(JSON.parse(responseData));
-                        		if (jsonResponse.status != "200") {
-                        			$scope.errorMsg = stackMessages(jsonResponse.message);
-                        			$scope.errorBlockShow = true;
-                        			App.hideLoading();
-                        		} else {
-                        			jsonResponse.data['logged_in'] = 1;
-                        			jsonResponse.data['status'] = 1;
-                        			App.removeUserDetails();
-                        			App.deleteAllShoppinglist();
-                        			App.saveUserDetails(jsonResponse.data);
-                        			userDetails = App.getUserDetails();
-                        			
-                        			App.hideLoading();
-                        			App.showLoading('Syncing data');
-                        			// if local storage is empty then get Data from server
-                            		RemoteService.getAllShoppinglistFromServer(userDetails['api_key']).then(
-                                    	function(responseData) {
-                                    		jsonResponse = angular.fromJson(JSON.parse(responseData));
-                                    		if (jsonResponse.status != "200") {
-                                    			App.showToast('Data did not sync. Please try again later.', 'long', 'center');
-                                    		} else {
-                                    			for(key in jsonResponse.data) {
-                                    				$scope.shoppingLists.unshift(jsonResponse.data[key]);
-                                    			}
-                                    			App.saveShoppinglist($scope.shoppingLists);
-                                    		}
-                                    		App.hideLoading();
-                                    		$rootScope.$broadcast('refreshData');
-                                    		$state.go('app.loading');
-                                    	},
-                                    	function( errorMessage ) {
-                                    		console.warn( errorMessage );
-                                    		App.showToast('Network error occurred. Please try again.', 'long', 'center');
-                                    		App.hideLoading();
-                                    		$state.go('app.loading');
-                                    	}
-                                    );
-                        		}
-                        	},
-                        	function( errorMessage ) {
-                        		console.warn( errorMessage );
-                        		App.showToast('Network error occurred. Please try again.', 'long', 'center');
-                        		App.hideLoading();
-                        	}
+                		user.oauth_source = 'F';
+                		RemoteService.oauthApiSignup(user).then(
+                			signupResponseSuccess,
+                			signupResponseError
                         );
                     });
                 },
@@ -292,6 +296,45 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             		$scope.errorBlockShow = true;
                 });
         };
+        
+        $scope.googleLogin = function () {
+        	clientId = '401942356925-uties56g7mu837au1nkivpadlm96uopl.apps.googleusercontent.com';
+        	scrope = Array('profile','email');
+        	$cordovaOauth.google(clientId, scrope)
+	        	.then(function(result) {
+	        		requestToken = result.access_token;
+	        		App.showLoading('Please wait');
+	            	jQuery.ajax({
+		    			type: "get",
+		    			url: "https://www.googleapis.com/oauth2/v2/userinfo",
+		    			data: {access_token: requestToken}
+		    		}).done(function(response) {
+		    			JSON.stringify(response);
+		    			if (!response.error) {
+		    				user = {
+		    					oauth_source: 'G',
+		    					first_name: response.given_name,
+		    					last_name: response.family_name,
+		    					gender: response.gender,
+		    					email:response.email
+		    				};
+		    				RemoteService.oauthApiSignup(user).then(
+	                			signupResponseSuccess,
+	                			signupResponseError
+	                        );
+		    			}
+	            	 })
+					.fail(function() {
+						$scope.errorMsg.push({msg:'Google login failed.'});
+	            		$scope.errorBlockShow = true;
+	            		App.hideLoading();
+					});
+	            }, function(error) {
+	            	$scope.errorMsg.push({msg:'Google login failed.'});
+            		$scope.errorBlockShow = true;
+	            });
+        };
+        
     })
     .controller('SignupController', function ($scope, $state, RemoteService, App) {
     	
@@ -491,7 +534,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         );
     })
     
-    .controller('ListingController', function($rootScope, $scope, $state, $location, App, RemoteService, $ionicPopup) {
+    .controller('ListingController', function($rootScope, $scope, $state, $location, App, RemoteService, $ionicPopup, $ionicActionSheet) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
     	$scope.noShopping = true;
@@ -505,6 +548,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
     		App.setLastActiveIndex(index);
     		$location.path("showitems/"+index+"/"+item.shoppinglist_name);
     	}
+    	
         $scope.edit = function(shopping) {
         	var updateShoppingName = prompt('Change shopping name', shopping.shoppinglist_name);
             if(updateShoppingName) {
@@ -512,12 +556,31 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             }
         }
         
+        $scope.showActionSheet = function(index, shopping) {
+        	$ionicActionSheet.show({
+    	     buttons: [
+    	       { text: '<i class="icon ion-edit"></i>&nbsp;&nbsp;Edit' }
+    	     ],
+    	     destructiveText: '<i class="icon ion-close-round"></i>&nbsp;&nbsp;Delete',
+    	     buttonClicked: function(pos) {
+    	    	 if (pos == 0) { // for edit
+    	    		 $scope.edit(shopping);
+    	    	 }
+    	    	 return true;
+    	     },
+    	     destructiveButtonClicked: function() {
+    	    	 $scope.showConfirm(index);
+		         return true;
+    	     }
+    	   });
+        }
+        
        // A delete confirm dialog
         $scope.showConfirm = function(index) {
-          var confirmPopup = $ionicPopup.confirm({
-            title: 'Want to delete this shopping?',
-            template: 'All items of this shopping will be deleted.'
-          });
+    	 var confirmPopup = $ionicPopup.confirm({
+	        title: 'Want to delete this shopping?',
+	        template: 'All items of this shopping will be deleted.'
+	     });
           confirmPopup.then(function(res) {	
             if(res) {
             	onConfirm(index);
@@ -563,7 +626,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         }
     })
 
-    .controller('ShowItemController', function($scope, $state, $window, $stateParams, $ionicModal, App, $ionicPopup) {
+    .controller('ShowItemController', function($scope, $state, $window, $stateParams, $ionicModal, App, $ionicPopup, $ionicActionSheet) {
     	$scope.pageTitle = $stateParams.shoppinglistname;
     	$scope.shoppingIndex = App.getLastActiveIndex();
     	$scope.shoppingLists = App.getAllShoppinglist();
@@ -683,6 +746,25 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
     	   $scope.hideEditModal();
        }
       	
+      	$scope.showActionSheet = function(index, item) {
+        	$ionicActionSheet.show({
+    	     buttons: [
+    	       { text: '<i class="icon ion-edit"></i>&nbsp;&nbsp;Edit' }
+    	     ],
+    	     destructiveText: '<i class="icon ion-close-round"></i>&nbsp;&nbsp;Delete',
+    	     buttonClicked: function(pos) {
+    	    	 if (pos == 0) { // for edit
+    	    		 $scope.edit(item,index);
+    	    	 }
+    	    	 return true;
+    	     },
+    	     destructiveButtonClicked: function() {
+    	    	 $scope.showConfirm(index);
+		         return true;
+    	     }
+    	   });
+        }
+
 	  	function onConfirm(deleteIndex) {
 	    	item = $scope.shoppingLists[$scope.shoppingIndex]['items'][deleteIndex];
 	    	// if item is not synched then delete item

@@ -223,7 +223,6 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
     	//window.localStorage.removeItem('shoppinglist');
     	//window.localStorage.removeItem('deleted_shoppinglist');
     	//window.localStorage.removeItem('deleted_items');
-    	
     	OpenFB.init('378306805627739');
     	
     	$rootScope.$on('OAuthException', function() {

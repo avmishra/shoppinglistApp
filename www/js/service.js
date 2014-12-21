@@ -15,20 +15,18 @@ angular.module('shoppinglist.service', [])
                         verifyEmail: verifyEmail,
                         sendForgotPassCode: sendForgotPassCode,
                         forgotpassword: forgotpassword,
-                        facebookSignup: facebookSignup
+                        oauthApiSignup: oauthApiSignup
                     });
                     
                     function buildUrl(pageName) {
-                    	var host = "http://192.168.0.105/avmishra/shoppinglist/web/app_dev.php/v1/";
-                    	//var host = "";
-                    	//console.log(host + pageName);
+                    	//var host = "http://192.168.56.1/avmishra/shoppinglist/web/app_dev.php/v1/";
                     	return host + pageName;
                     }
                     
-                    function facebookSignup(signupData) {
+                    function oauthApiSignup(signupData) {
                     	var request = $http({
                             method: "post",
-                            url: buildUrl("users/facebook_signup"),
+                            url: buildUrl("users/oauth_signup"),
                             data: signupData
                         });
                     	return(request.then(handleSuccess, handleError));
