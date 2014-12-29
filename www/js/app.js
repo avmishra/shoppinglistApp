@@ -206,7 +206,7 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	    	window.localStorage['lastActiveProject'] = index;
 	    },
 	    showToast: function(msg, duration, position){
-	    	$cordovaToast.show(msg, duration, position);
+	    	//$cordovaToast.show(msg, duration, position);
 	    },
 	    showLoading : function(msg){
 	    	$ionicLoading.show({

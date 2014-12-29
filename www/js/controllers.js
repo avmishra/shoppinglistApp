@@ -631,7 +631,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
     	$scope.shoppingIndex = App.getLastActiveIndex();
     	$scope.shoppingLists = App.getAllShoppinglist();
     	$scope.submitted = false;
-    	$scope.item = {unit:'pk'};
+    	$scope.item = {unit:'pk', notes:''};
         $scope.editItem = {};
         var editIndex = null;
         $scope.units = {pk: 'Packet', kg: 'KG', gm: 'Gram', lt: 'Liter', ml: 'ML', un: 'Unit'};
@@ -644,9 +644,9 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
             focusFirstInput: true
         });
         //Be sure to cleanup the modal by removing it from the DOM
-//        $scope.$on('$destroy', function() {
-//          $scope.itemModal.remove();
-//        });
+        $scope.$on('$destroy', function() {
+          $scope.itemModal.remove();
+        });
 //        
         $scope.showModal = function() {
         	$scope.submitted = false;
@@ -654,7 +654,7 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         }
         
         $scope.hideModal = function() {
-        	$scope.item = {unit:'pk'};
+        	$scope.item = {unit:'pk', notes:''};
             $scope.itemModal.hide();
         }
         
@@ -667,9 +667,9 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         });
         
       //Be sure to cleanup the modal by removing it from the DOM
-//        $scope.$on('$destroy', function() {
-//          $scope.itemEditModal.remove();
-//        });
+        $scope.$on('$destroy', function() {
+          $scope.itemEditModal.remove();
+        });
 //        
         $scope.showEditModal = function() {
         	$scope.submitted = false;
@@ -708,11 +708,11 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
 	        	App.saveShoppinglist($scope.shoppingLists);
 	        	App.showToast('Item added successfully', 'short', 'center');
 	        	if (!addAnother) {
-	        		$scope.item = {unit:'pk'};
+	        		$scope.item = {unit:'pk', notes:''};
 	        		$scope.hideModal();
 	        	}
 	        	$scope.submitted = false;
-	        	$scope.item = {unit:'pk'};
+	        	$scope.item = {unit:'pk', notes:''};
         	} else {
         		$scope.submitted = true;
         	}
@@ -740,10 +740,10 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
 	        	editIndex = null;
 	        	App.showToast('Item updated successfully', 'short', 'center');
 	        	$scope.submitted = false;
+	        	$scope.hideEditModal();
 	       	} else {
 	       		$scope.submitted = true;
 	       	}
-    	   $scope.hideEditModal();
        }
       	
       	$scope.showActionSheet = function(index, item) {

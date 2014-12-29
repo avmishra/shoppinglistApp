@@ -10,7 +10,8 @@ var pluginlist = [
     "org.apache.cordova.dialogs",
     "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
     "com.google.cordova.admob",
-    "org.apache.cordova.inappbrowser"
+    "org.apache.cordova.inappbrowser",
+    "de.appplant.cordova.plugin.local-notification"
 ];
  
 // no need to configure below
