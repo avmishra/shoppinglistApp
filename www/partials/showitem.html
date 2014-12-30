@@ -14,11 +14,14 @@
                             <i class="icon {{(item.picked == 1) ? 'ion-ios7-checkmark' : 'ion-ios7-circle-outline'}} custom-icon-pick"></i>
                         </span>
                     </div>
-                    <div class="col col-90 flot-lt">
+                    <div class="col col-80 flot-lt">
                     	{{item.product_name}}
                         <span id="badge_{{$index}}" class="badge {{(item.picked == 1) ? 'badge-balanced' : 'badge-assertive'}}">{{item.quantity}} {{units[item.unit]}}</span>
                         <div class="item-date">{{item.created_at}}</div> 
                         <div class="clear-both notes">{{item.notes}}</div>
+                    </div>
+                    <div class="col col-10 show-item-android-more" ng-click="showActionSheet($index, item)">
+					  	<i class="icon ion-android-more">&nbsp;</i>
                     </div>
                     
                 </div>   
@@ -31,8 +34,10 @@
             </ion-item>
         </ion-list>
         <div class="card" ng-show="!shoppingLists[shoppingIndex].items.length" >
-		    <div class="item item-text-wrap">
-			   No item added in this shopping. Please click on above right icon to add new item.
+		    <div class="item item-text-wrap">Click here to
+			   <button class="button button-icon v-align-mid-button" ng-click="showModal()">
+		            <i class="icon ion-plus-round">&nbsp; Add New Item</i>
+		        </button>
 		    </div>
 		</div>
     </ion-content>

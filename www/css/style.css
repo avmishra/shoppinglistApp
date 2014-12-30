@@ -40,6 +40,9 @@ body {
     background-color: #D9D9D9;
 }
 
+.item .badge {
+    right: 50px;
+}
 .show-item .item-content{
     padding: 5px 5px 5px 5px;
 }
@@ -87,4 +90,21 @@ input {
 }
 .logout {
     color:red;
+}
+.android-more {
+	width:5%;
+	float:right;
+	text-align:right;
+}
+.listing-area {
+	width:95%;
+	float:left;
+}
+.v-align-mid-button {
+	vertical-align: middle;
+}
+.show-item-android-more {
+	float:right;
+	text-align:right;
+	padding-top:10px;
 }

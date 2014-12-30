@@ -17,22 +17,27 @@
 			    </ul>
 		    </div>
 		</div>
-        <ion-list>
-            <ion-item on-hold="showActionSheet($index, item)" ng-class-odd="'odd'" ng-class-even="'even'" ng-hide="noShopping" ng-repeat="item in shoppingLists" item="item" ng-click="showItems($index, item)">
-                <span class="item-item">{{item.shoppinglist_name}}</span> 
-                <span class="badge badge-assertive">{{item.remaining_item}}</span>
-                <div class="item-date">{{item.created_at}}</div>
-                <ion-option-button class="button-royal" ng-click="edit(item)">
-                    <i class="icon ion-edit"></i>
-                </ion-option-button>
-                <ion-option-button class="button-assertive" ng-click="showConfirm($index)">
-                    <i class="icon ion-close-round"></i>
-                </ion-option-button>
-            </ion-item>
-        </ion-list>
-        <div class="card" ng-show="noShopping" >
+		
+		<div class="list">
+			<div class="item" ng-show="shoppingLists.length != 0" ng-repeat="item in shoppingLists">
+				<div class="listing-area" on-hold="showActionSheet($index, item)" item="item" ng-click="showItems($index, item)">
+			    	<span class="item-item">{{item.shoppinglist_name}}</span> 
+		            <span class="badge badge-assertive">{{item.remaining_item}}</span>
+		            <div class="item-date">{{item.created_at}}</div>
+			  	</div>
+			  	<div class="android-more" ng-click="showActionSheet($index, item)">
+			  		<i class="icon ion-android-more">&nbsp;</i>
+			  	</div>
+			  	<div class="clear-both"></div>
+			</div>
+		</div>
+
+        <div class="card" ng-show="shoppingLists.length == 0" >
 		    <div class="item item-text-wrap">
-			    Your shopping list is empty. Please click on above right icon to create new one.
+			    Your shopping list is empty. Please click on 
+			    <button class="button button-icon v-align-mid-button" ng-click="newShopping()">
+		            <i class="icon ion-compose">&nbsp;New Shopping</i>
+		        </button> to create new one.
 		    </div>
 		</div>
     </ion-content>

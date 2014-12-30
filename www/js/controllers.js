@@ -534,13 +534,9 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
     .controller('ListingController', function($rootScope, $scope, $state, $location, App, RemoteService, $ionicPopup, $ionicActionSheet) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
-    	$scope.noShopping = true;
     	var userDetails = App.getUserDetails();
     	$scope.shoppingLists = App.getAllShoppinglist();
 
-    	if ($scope.shoppingLists.length) {
-    		$scope.noShopping = false;
-    	}
     	$scope.showItems = function(index, item) {
     		App.setLastActiveIndex(index);
     		$location.path("showitems/"+index+"/"+item.shoppinglist_name);
@@ -796,7 +792,7 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
 	  	// A delete confirm dialog
         $scope.showConfirm = function(index) {
           var confirmPopup = $ionicPopup.confirm({
-            title: '',
+            title: 'Delete?',
             template: 'Want to delete this item?'
           });
           confirmPopup.then(function(res) {	
