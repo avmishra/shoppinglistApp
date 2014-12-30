@@ -1,0 +1,37 @@
+<ion-view title="">
+    <ion-content has-header="true" padding="true">
+	    <div class="card" ng-show="errorBlockShow" >
+		    <div class="item item-text-wrap">
+			    <ul>
+			    	<ol class="errMsg" ng-repeat="err in errorMsg">{{err.msg}}</li>
+			    </ul>
+		    </div>
+		</div>
+		<div class="card" ng-show="successBlockShow" >
+		    <div class="item item-text-wrap">
+			    <ul>
+			    	<ol class="successMsg" ng-repeat="succ in successMsg">{{succ.msg}}</li>
+			    </ul>
+		    </div>
+		</div>
+	    <form name="shareShoppinglistFrm" novalidate ng-submit="submit(shareShoppinglistFrm)">
+	        <div class="list">
+	            <label class="item item-input item-stacked-label">
+	                <span class="input-label">Please enter email whom you want to share your shopping</span>
+	                <input required type="email" id="email" name="email" placeholder="Please enter your email" ng-model="share.email">
+	                <div class="error-container" ng-show="shareShoppinglistFrm.email.$invalid && submitted">
+	                    <small class="error" ng-show="shareShoppinglistFrm.email.$error.required">
+	                        Email is required.
+	                    </small>
+	                    <small class="error" ng-show="shareShoppinglistFrm.email.$error.email">
+	                        Invalid email
+	                    </small>
+	                </div>
+	            </label>
+	            <div class="button-bar">
+	                <button type="sumbit" class="button button-block button-balanced">Share</button>
+	            </div>
+	        </div>
+	    </form>
+    </ion-content>
+</ion-view>

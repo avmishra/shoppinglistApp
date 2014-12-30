@@ -1,3 +1,4 @@
+var controllerModule = angular.module('shoppinglist.controllers', ['shoppinglist.service']);
 angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova','shoppinglist.admob','openfb'])
 
 	.config(function ($stateProvider, $urlRouterProvider) {
@@ -95,6 +96,15 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	                'shoppingContent': {
 	                	templateUrl: "partials/emailVerification.html",
 	                    controller: "EmailVerifyController"
+	                }
+	            }
+	        })
+	        .state('app.shareShoppinglist', {
+	        	url: "shareShoppinglist/:shoppinglistId",
+	            views: {
+	                'shoppingContent': {
+	                	templateUrl: "partials/shareShoppinglist.html",
+	                    controller: "ShareShoppinglistController"
 	                }
 	            }
 	        })
@@ -236,7 +246,6 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
         $rootScope.$on('$stateChangeStart', function(event, toState) {
         	var userDetails = App.getUserDetails();
         	$rootScope.logged_in = false;
-        	//console.log(userDetails);
             if (toState.name !== "app.login" && toState.name !== "app.logout"
             	&& toState.name !== "app.loading" && toState.name !== "app.signup"
             	&& toState.name !== "app.emailVerification" && toState.name !== "app.aboutus"

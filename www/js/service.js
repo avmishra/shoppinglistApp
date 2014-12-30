@@ -15,13 +15,30 @@ angular.module('shoppinglist.service', [])
                         verifyEmail: verifyEmail,
                         sendForgotPassCode: sendForgotPassCode,
                         forgotpassword: forgotpassword,
-                        oauthApiSignup: oauthApiSignup
+                        oauthApiSignup: oauthApiSignup,
+                        shareShoppinglist:shareShoppinglist
                     });
                     
                     function buildUrl(pageName) {
                     	var host = "http://192.168.56.1/avmishra/shoppinglist/web/app_dev.php/v1/";
                     	return host + pageName;
                     }
+                    
+                    function shareShoppinglist(email, shoppinglistId, apiKey) {
+                    	var request = $http({
+                            method: "post",
+                            url: buildUrl("shoppinglists/share_shoppinglist"),
+                            data: {
+                            	email: email,
+                            	id: shoppinglistId
+                            },
+                            params: {
+                                api_key: apiKey
+                            }
+                        });
+                    	return(request.then(handleSuccess, handleError));
+                    }
+                    
                     
                     function oauthApiSignup(signupData) {
                     	var request = $http({

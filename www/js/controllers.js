@@ -1,6 +1,4 @@
-angular.module('shoppinglist.controllers', ['shoppinglist.service'])
-
-    .controller('AppController', function ($scope, $state, App, RemoteService, $ionicPopup) {
+controllerModule.controller('AppController', function ($scope, $state, App, RemoteService, $ionicPopup) {
     	var userDetails = App.getUserDetails();
     	if (userDetails == null) {
     		$scope.name = '';
@@ -41,7 +39,6 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
     		$scope.$broadcast('slideBox.prevSlide');
     	}
     })
-    
     .controller('ForgotPasswordController', function ($scope, $state, App, RemoteService) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -559,12 +556,24 @@ angular.module('shoppinglist.controllers', ['shoppinglist.service'])
         $scope.showActionSheet = function(index, shopping) {
         	$ionicActionSheet.show({
     	     buttons: [
-    	       { text: '<i class="icon ion-edit"></i>&nbsp;&nbsp;Edit' }
-    	     ],
+  	            	 { text: '<i class="icon ion-edit"></i>&nbsp;&nbsp;Edit' },
+	            	 { text: '<i class="icon ion-android-share"></i>&nbsp;&nbsp;Share' }
+	               ],
     	     destructiveText: '<i class="icon ion-close-round"></i>&nbsp;&nbsp;Delete',
     	     buttonClicked: function(pos) {
     	    	 if (pos == 0) { // for edit
     	    		 $scope.edit(shopping);
+    	    	 }
+    	    	 if (pos == 1) { // for share
+    	    		 if (shopping.id_shoppinglist != '') {
+    	    			 $location.path("shareShoppinglist/"+shopping.id_shoppinglist);
+    	         	 } else {
+    	         		$ionicPopup.alert({
+    	         			title: 'Sync before sharing',
+    	         			template: 'Shopping cannot be shared untill it is not synced on server.'
+	         		    });
+    	         	 }
+    	    		 
     	    	 }
     	    	 return true;
     	     },

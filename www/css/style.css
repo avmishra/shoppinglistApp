@@ -63,7 +63,9 @@ body {
 .errMsg {
     color:red;
 }
-
+.successMsg {
+    color:green;
+}
 .item-date {
     font-style: italic;
     color: #8A6DE9;
