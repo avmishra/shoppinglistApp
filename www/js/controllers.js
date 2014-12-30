@@ -1,4 +1,4 @@
-controllerModule.controller('AppController', function ($scope, $state, App, RemoteService, $ionicPopup) {
+controllerModule.controller('AppController', ["$scope", "$state", "App", "RemoteService", "$ionicPopup", function ($scope, $state, App, RemoteService, $ionicPopup) {
     	var userDetails = App.getUserDetails();
     	if (userDetails == null) {
     		$scope.name = '';
@@ -25,8 +25,8 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
     		ionic.Platform.exitApp();
     		//navigator.app.exitApp();
     	}
-    })
-    .controller('HelpController', function ($scope, $state, $ionicSlideBoxDelegate) {
+    }])
+    .controller('HelpController', ["$scope", "$state", "$ionicSlideBoxDelegate", function ($scope, $state, $ionicSlideBoxDelegate) {
     	$scope.slideHasChanged = function(index) {
     	    console.log(index);
     	}
@@ -38,8 +38,8 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
     	$scope.prev = function() {
     		$scope.$broadcast('slideBox.prevSlide');
     	}
-    })
-    .controller('ForgotPasswordController', function ($scope, $state, App, RemoteService) {
+    }])
+    .controller('ForgotPasswordController', ["$scope", "$state", "App", "RemoteService", function ($scope, $state, App, RemoteService) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
         $scope.forgot = {};
@@ -107,8 +107,8 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
             }
         }
     	
-    })
-    .controller('ChangepasswordController', function ($scope, $state, App, RemoteService) {
+    }])
+    .controller('ChangepasswordController', ["$scope", "$state", "App", "RemoteService", function ($scope, $state, App, RemoteService) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
         $scope.userForm = {};
@@ -147,8 +147,8 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
                 $scope.submitted = true;
             }
         };
-    })
-    .controller('LoginController', function ($rootScope, $scope, $state, $location, $http, RemoteService, App, OpenFB, $cordovaOauth) {
+    }])
+    .controller('LoginController', ["$rootScope", "$scope", "$state", "$location", "$http", "RemoteService", "App", "OpenFB", "$cordovaOauth", function ($rootScope, $scope, $state, $location, $http, RemoteService, App, OpenFB, $cordovaOauth) {
     	var userDetails = App.getUserDetails();
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -169,7 +169,6 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
             	App.showLoading('Please wait');
                 RemoteService.login($scope.userForm.email, $scope.userForm.password).then(
             		function(responseData) {
-            			console.log(responseData);
                 		jsonResponse = angular.fromJson(JSON.parse(responseData));
                 		if (jsonResponse.status != "200") {
                 			$scope.errorMsg = stackMessages(jsonResponse.message);
@@ -332,8 +331,8 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
 	            });
         };
         
-    })
-    .controller('SignupController', function ($scope, $state, RemoteService, App) {
+    }])
+    .controller('SignupController', ["$scope", "$state", "RemoteService", "App", function ($scope, $state, RemoteService, App) {
     	
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
@@ -376,9 +375,9 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
             }
         }
 
-    })
+    }])
     
-    .controller('LoadingController', function($scope, $state, App, RemoteService) {
+    .controller('LoadingController', ["$scope", "$state", "App", "RemoteService", function($scope, $state, App, RemoteService) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
         $scope.userForm = {};
@@ -393,9 +392,9 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
         		$state.go('app.listing');
         	}
         }
-    })
+    }])
     
-    .controller('EmailVerifyController', function($scope, $state, App, RemoteService) {
+    .controller('EmailVerifyController', ["$scope", "$state", "App", "RemoteService", function($scope, $state, App, RemoteService) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
         $scope.verifyForm = {};
@@ -436,10 +435,10 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
             $state.go('app.login');
     	}
     	
-    })
+    }])
     
     
-    .controller('SyncController', function($scope, $state, App, RemoteService) {
+    .controller('SyncController', ["$scope", "$state", "App", "RemoteService", function($scope, $state, App, RemoteService) {
     	var shoppinglistSync = [];
     	var shoppinglistItemSync = [];
     	var userDetails = App.getUserDetails();
@@ -529,9 +528,9 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
         		$state.go('app.listing');
         	}
         );
-    })
+    }])
     
-    .controller('ListingController', function($rootScope, $scope, $state, $location, App, RemoteService, $ionicPopup, $ionicActionSheet) {
+    .controller('ListingController', ["$rootScope", "$scope", "$state", "$location", "App", "RemoteService", "$ionicPopup", "$ionicActionSheet", function($rootScope, $scope, $state, $location, App, RemoteService, $ionicPopup, $ionicActionSheet) {
     	$scope.errorBlockShow = false;
     	$scope.errorMsg = [];
     	var userDetails = App.getUserDetails();
@@ -629,9 +628,9 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
         	App.showToast('New shopping created', 'long', 'center');
         	$location.path('showitems/0/' + newShoppingName);
         }
-    })
+    }])
 
-    .controller('ShowItemController', function($scope, $state, $window, $stateParams, $ionicModal, App, $ionicPopup, $ionicActionSheet) {
+    .controller('ShowItemController', ["$scope", "$state", "$window", "$stateParams", "$ionicModal", "App", "$ionicPopup", "$ionicActionSheet", function($scope, $state, $window, $stateParams, $ionicModal, App, $ionicPopup, $ionicActionSheet) {
     	$scope.pageTitle = $stateParams.shoppinglistname;
     	$scope.shoppingIndex = App.getLastActiveIndex();
     	$scope.shoppingLists = App.getAllShoppinglist();
@@ -802,7 +801,7 @@ controllerModule.controller('AppController', function ($scope, $state, App, Remo
           });
         };
         
-    });
+    }]);
 
 function stackMessages(msg) {
     var data = msg.split('^');

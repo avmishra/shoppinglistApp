@@ -1,4 +1,4 @@
-controllerModule.controller('ShareShoppinglistController', function ($scope, $state, $stateParams, App, RemoteService) {
+controllerModule.controller('ShareShoppinglistController', ["$scope", "$state", "$stateParams", "App", "RemoteService", function ($scope, $state, $stateParams, App, RemoteService) {
 	$scope.errorBlockShow = false;
 	$scope.successBlockShow = false;
 	$scope.errorMsg = [];
@@ -39,4 +39,4 @@ controllerModule.controller('ShareShoppinglistController', function ($scope, $st
         }
     }
 	
-});
+}]);

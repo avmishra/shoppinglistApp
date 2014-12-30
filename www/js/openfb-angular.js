@@ -9,7 +9,7 @@
  */
 angular.module('openfb', [])
 
-    .factory('OpenFB', function ($rootScope, $q, $window, $http) {
+    .factory('OpenFB', ["$rootScope", "$q", "$window", "$http", function ($rootScope, $q, $window, $http) {
 
         var FB_LOGIN_URL = 'https://www.facebook.com/dialog/oauth',
 
@@ -214,7 +214,7 @@ angular.module('openfb', [])
             oauthCallback: oauthCallback
         }
 
-    });
+    }]);
 
 // Global function called back by the OAuth login dialog
 function oauthCallback(url) {

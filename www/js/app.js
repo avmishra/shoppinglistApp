@@ -1,7 +1,7 @@
 var controllerModule = angular.module('shoppinglist.controllers', ['shoppinglist.service']);
 angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova','shoppinglist.admob','openfb'])
 
-	.config(function ($stateProvider, $urlRouterProvider) {
+	.config(["$stateProvider", "$urlRouterProvider", function ($stateProvider, $urlRouterProvider) {
 	    $stateProvider
 	        .state('app', {
 	            url: "/",
@@ -121,9 +121,9 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	// fallback route
 	$urlRouterProvider.otherwise('/loading');
 	
-	})
+	}])
 
-	.factory('App', function($rootScope, $cordovaToast, $ionicLoading) {
+	.factory('App', ["$rootScope", "$cordovaToast", "$ionicLoading", function($rootScope, $cordovaToast, $ionicLoading) {
 	  return {
 		getAllShoppinglist: function() {
 			var allShopping = window.localStorage.getItem('shoppinglist');
@@ -227,8 +227,8 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	    	$ionicLoading.hide();
 	    }
 	  }
-	})
-    .run(function ($rootScope, $state, $window, App, $ionicPlatform, $ionicSideMenuDelegate, AdMob, OpenFB) {
+	}])
+    .run(["$rootScope", "$state", "$window", "App", "$ionicPlatform", "$ionicSideMenuDelegate", "AdMob", "OpenFB", function ($rootScope, $state, $window, App, $ionicPlatform, $ionicSideMenuDelegate, AdMob, OpenFB) {
     	//window.localStorage.removeItem('user');
     	//window.localStorage.removeItem('shoppinglist');
     	//window.localStorage.removeItem('deleted_shoppinglist');
@@ -262,4 +262,4 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
             }
         });
 
-    }) ;
+    }]) ;
