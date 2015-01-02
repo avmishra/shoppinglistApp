@@ -4,12 +4,12 @@ angular.module('shoppinglist.admob', [])
 		// Initialize ad
 	   	var ad_units = {
 		    ios: {
-		    	banner: 'ca-app-pub-8347180568592241/3644354994',
-		        interstitial: 'ca-app-pub-8347180568592241/5121088199'
+		    	banner: 'ca-app-pub-6881561621578590/5272987669',
+		        interstitial: 'ca-app-pub-6881561621578590/6749720868'
 		    },
 		    android: {
-		    	banner: 'ca-app-pub-8347180568592241/3644354994',
-		        interstitial: 'ca-app-pub-8347180568592241/5121088199'
+		    	banner: 'ca-app-pub-6881561621578590/5272987669',
+		        interstitial: 'ca-app-pub-6881561621578590/6749720868'
 		    }
 		};
 		 
