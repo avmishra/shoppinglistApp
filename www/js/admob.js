@@ -23,8 +23,6 @@ angular.module('shoppinglist.admob', [])
 		    if (device.version.search('4.1') !== 0) {
 		    	AdMob.showBanner(9);
 		    }
-		 });
-		 
-		 
+		 }); 
 	 });
 });
