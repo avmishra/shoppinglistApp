@@ -1,4 +1,8 @@
-/* Empty. Add your own CSS if you like */
+@font-face {
+    font-family: customfont;
+    src: url(fonts/YanoneKaffeesatz-Regular.ttf);
+    font-size:12px;
+}
 .custom-icon {
     font-size: 20px;
 }
@@ -26,12 +30,6 @@
     font-weight: bold;
 }
 
-@font-face {
-    font-family: customfont;
-    src: url(fonts/YanoneKaffeesatz-Regular.ttf);
-    font-size:12px;
-}
-
 body {
     font-family: customfont;
 }
@@ -47,11 +45,11 @@ body {
     padding: 5px 5px 5px 5px;
 }
 
-.flot-lt {
+.float-lt {
     float: left;
 }
 
-.flot-rt {
+.float-rt {
     float: right;
 }
 
@@ -92,19 +90,28 @@ input {
     color:red;
 }
 .android-more {
-	width:5%;
+	width:10%;
 	float:right;
 	text-align:right;
+	padding:9px;
 }
 .listing-area {
-	width:95%;
+	width:90%;
 	float:left;
+	position:relative;
 }
 .v-align-mid-button {
 	vertical-align: middle;
 }
 .show-item-android-more {
 	float:right;
-	text-align:right;
-	padding-top:10px;
+	text-align:center;
+	padding:10px;
+}
+.custom-badge {
+	top:5px!important;
+	right:5px !important
+}
+.pos-rel {
+	position:relative;
 }

@@ -169,6 +169,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
             	App.showLoading('Please wait');
                 RemoteService.login($scope.userForm.email, $scope.userForm.password).then(
             		function(responseData) {
+            			console.log(responseData);
                 		jsonResponse = angular.fromJson(JSON.parse(responseData));
                 		if (jsonResponse.status != "200") {
                 			$scope.errorMsg = stackMessages(jsonResponse.message);
@@ -692,13 +693,13 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 $("#badge_"+inc).removeClass('badge-assertive').addClass('badge-balanced');
                 item.picked = 0;
                 $scope.shoppingLists[$scope.shoppingIndex].remaining_item++;
-                App.showToast('Item dropped successfully', 'short', 'top');
+                App.showToast('Item dropped', 'short', 'top');
             } else {
                 $("#picked_"+inc).html('<i class="icon ion-ios7-checkmark custom-icon-pick"></i>');
                 $("#badge_"+inc).removeClass('badge-balanced').addClass('badge-assertive');
                 item.picked = 1;
                 $scope.shoppingLists[$scope.shoppingIndex].remaining_item--;
-                App.showToast('Item picked successfully', 'short', 'top');
+                App.showToast('Item picked', 'short', 'top');
             }
             item.sync = 1;
             App.saveShoppinglist($scope.shoppingLists);

@@ -5,7 +5,6 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	    $stateProvider
 	        .state('app', {
 	            url: "/",
-	            abstract: true,
 	            templateUrl: "partials/menu.html",
 	            controller: "AppController"
 	        })
