@@ -21,7 +21,6 @@ angular.module('shoppinglist.service', [])
                     
                     function buildUrl(pageName) {
                     	var host = "http://192.168.56.1/avmishra/shoppinglist/web/app_dev.php/v1/";
-                    	//var host = "http://www.avmishra.org/shoppinglist/web/v1/";
                     	return host + pageName;
                     }
                     

@@ -18,13 +18,13 @@
                     <i class="icon ion-clipboard custom-icon"></i>
                     &nbsp;&nbsp;Home
                 </ion-item>
-                <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.sync" ng-show="logged_in">
+                <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.sync">
 	                <i class="icon ion-arrow-swap custom-icon"></i>
 	                &nbsp;&nbsp;Sync on server
 	            </ion-item>
-	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.changepassword" ng-show="logged_in">
+                <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.login" ng-hide="logged_in">
                     <i class="icon ion-locked custom-icon"></i>
-                    &nbsp;&nbsp;Change password
+                    &nbsp;&nbsp;Login
                 </ion-item>
                 <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="exitApp()">
                     <i class="icon ion-power custom-icon"></i>
@@ -38,6 +38,10 @@
 	                <i class="icon ion-log-out custom-icon"></i>
 	                &nbsp;&nbsp;<span class="logout">Logout</span> <span style="font-size:13px">({{userName}})</span>
 	            </ion-item>
+	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.changepassword" ng-show="logged_in">
+                    <i class="icon ion-locked custom-icon"></i>
+                    &nbsp;&nbsp;Change password
+                </ion-item>
 	            <ion-item item-type="item-icon-left" nav-clear menu-close ui-sref="app.aboutus">
 	                <i class="icon ion-ios7-people custom-icon"></i>
 	                &nbsp;&nbsp;About Shoppinglist

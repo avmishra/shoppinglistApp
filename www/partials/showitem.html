@@ -17,7 +17,7 @@
                     <div class="col col-80 float-lt pos-rel">
                     	{{item.product_name}}
                         <span id="badge_{{$index}}" class="badge custom-badge {{(item.picked == 1) ? 'badge-balanced' : 'badge-assertive'}}">{{item.quantity}} {{units[item.unit]}}</span>
-                        <div class="item-date">{{item.created_at}}</div> 
+                        <div class="item-date {{(item.id_shoppinglist_item == '' || item.sync == 1) ? 'not-synced-data' : 'synced-data'}}">{{item.created_at}}</div> 
                         <div class="clear-both notes">{{item.notes}}</div>
                     </div>
                     <div class="col col-10 show-item-android-more" ng-click="showActionSheet($index, item)">

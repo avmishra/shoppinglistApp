@@ -10,7 +10,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
     	$scope.showConfirm = function(index) {
 	          var confirmPopup = $ionicPopup.confirm({
 	            title: 'Do you really want to logout?',
-	            template: 'Please sync the data with server so that you can access them later. Ignore if already did that.'
+	            template: 'Please sync the data on server otherwise it will be lost. Ignore if already did that.'
 	          });
 	          confirmPopup.then(function(res) {	
 	            if(res) {
@@ -71,7 +71,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 	}
                 );
@@ -91,14 +91,14 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 			$scope.errorBlockShow = true;
                 			App.hideLoading();
                 		} else {
-                			App.showToast('We have sent new password on your email', 'long', 'center');
+                			App.showToast('We have sent new password on your email', 'long', 'top');
                 			App.hideLoading();
                 			$state.go('app.login');
                 		}
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 	}
                 );
@@ -113,8 +113,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
     	$scope.errorMsg = [];
         $scope.userForm = {};
         $scope.submitted = false;
-        var userDetails = App.getUserDetails();
-        
+        var userDetails = App.getUserDetails();        
     	$scope.changePassword = function (userFrm) {
     		if (userFrm.$valid) {
     			if ($scope.userForm.password != $scope.userForm.confirmpassword) {
@@ -130,7 +129,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
 	                			$scope.errorBlockShow = true;
 	                			App.hideLoading();
 	                		} else {
-	                			App.showToast('Password changed successfully', 'long', 'center');
+	                			App.showToast('Password changed successfully', 'long', 'top');
 	                			App.hideLoading();
 	                			$state.go('app.listing');
 	                		}
@@ -138,7 +137,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
 	                	},
 	                	function( errorMessage ) {
 	                		console.warn( errorMessage );
-	                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+	                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
 	                		App.hideLoading();
 	                	}
 	                );
@@ -169,7 +168,6 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
             	App.showLoading('Please wait');
                 RemoteService.login($scope.userForm.email, $scope.userForm.password).then(
             		function(responseData) {
-            			console.log(responseData);
                 		jsonResponse = angular.fromJson(JSON.parse(responseData));
                 		if (jsonResponse.status != "200") {
                 			$scope.errorMsg = stackMessages(jsonResponse.message);
@@ -180,7 +178,6 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 			jsonResponse.logged_in = 1;
                 			jsonResponse.status = 1;
                 			App.removeUserDetails();
-                			App.deleteAllShoppinglist();
                 			App.saveUserDetails(jsonResponse);
                 			userDetails = App.getUserDetails();
                 			
@@ -191,7 +188,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                             	function(responseData) {
                             		jsonResponse = angular.fromJson(JSON.parse(responseData));
                             		if (jsonResponse.status != "200") {
-                            			App.showToast('Data did not sync. Please try again later.', 'long', 'center');
+                            			App.showToast('Data did not sync. Please try again later.', 'long', 'top');
                             		} else {
                             			for(key in jsonResponse.data) {
                             				$scope.shoppingLists.unshift(jsonResponse.data[key]);
@@ -204,7 +201,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                             	},
                             	function( errorMessage ) {
                             		console.warn( errorMessage );
-                            		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                            		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                             		App.hideLoading();
                             		$state.go('app.loading');
                             	}
@@ -214,7 +211,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 	}
                 );
@@ -250,7 +247,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 	function(responseData) {
                 		jsonResponse = angular.fromJson(JSON.parse(responseData));
                 		if (jsonResponse.status != "200") {
-                			App.showToast('Data did not sync. Please try again later.', 'long', 'center');
+                			App.showToast('Data did not sync. Please try again later.', 'long', 'top');
                 		} else {
                 			for(key in jsonResponse.data) {
                 				$scope.shoppingLists.unshift(jsonResponse.data[key]);
@@ -263,7 +260,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 		$state.go('app.loading');
                 	}
@@ -272,7 +269,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         };
         
         var signupResponseError = function() {
-        	App.showToast('Network error occurred. Please try again.', 'long', 'center');
+        	App.showToast('Network error occurred. Please try again.', 'long', 'top');
     		App.hideLoading();
         };
         
@@ -359,7 +356,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 		} else {
                 			jsonResponse.data['logged_in'] = 0;
                 			App.saveUserDetails(jsonResponse.data);
-                			App.showToast('You have successfully signed up. Please verify your email id.', 'long', 'center');
+                			App.showToast('You have successfully signed up. Please verify your email id.', 'long', 'top');
                 			App.hideLoading();
                 			$state.go('app.emailVerification');
                 		}
@@ -367,7 +364,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 	}
                 );
@@ -384,15 +381,13 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         $scope.userForm = {};
         $scope.shoppingLists = App.getAllShoppinglist();
     	var userDetails = App.getUserDetails();
-        if (userDetails == null || userDetails.status == 0) {
-            $state.go('app.login');
-        } else {
-        	if(userDetails.email_verified == 0) {
-        		$state.go('app.emailVerification');
-        	} else {
-        		$state.go('app.listing');
-        	}
-        }
+    	
+        if(userDetails != null && userDetails.email_verified == 0) {
+    		$state.go('app.emailVerification');
+    	} else {
+    		$state.go('app.listing');
+    	}
+        
     }])
     
     .controller('EmailVerifyController', ["$scope", "$state", "App", "RemoteService", function($scope, $state, App, RemoteService) {
@@ -415,14 +410,14 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                 		} else {
                 			userDetails['email_verified'] = 1;
                 			App.saveUserDetails(userDetails);
-                			App.showToast('You have successfully verified your account.', 'long', 'center');
+                			App.showToast('You have successfully verified your account.', 'long', 'top');
                 			App.hideLoading();
                 			$state.go('app.login');
                 		}
                 	},
                 	function( errorMessage ) {
                 		console.warn( errorMessage );
-                		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                 		App.hideLoading();
                 	}
                 );
@@ -432,7 +427,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         }
     	
     	$scope.differentUser = function() {
-    		App.deleteStorage();
+    		App.removeUserDetails();
             $state.go('app.login');
     	}
     	
@@ -490,7 +485,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         			$scope.errorMsg = stackMessages(jsonResponse.message);
         			$scope.errorBlockShow = true;
         			App.hideLoading();
-        			App.showToast('Uploading fail. Please try again later.', 'long', 'center');
+        			App.showToast('Uploading fail. Please try again later.', 'long', 'top');
         			$state.go('app.listing');
         		} else {
         			App.deleteSyncStorage();
@@ -501,7 +496,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                     	function(responseData) {
                     		jsonResponse = angular.fromJson(JSON.parse(responseData));
                     		if (jsonResponse.status != "200") {
-                    			App.showToast('Downloading fail. Please try again later.', 'long', 'center');
+                    			App.showToast('Downloading fail. Please try again later.', 'long', 'top');
                     			App.hideLoading();
                     			$state.go('app.listing');
                     		} else {
@@ -515,7 +510,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
                     	},
                     	function( errorMessage ) {
                     		console.warn( errorMessage );
-                    		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+                    		App.showToast('Network error occurred. Please try again.', 'long', 'top');
                     		App.hideLoading();
                     		$state.go('app.listing');
                     	}
@@ -524,7 +519,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         	},
         	function( errorMessage ) {
         		console.warn( errorMessage );
-        		App.showToast('Network error occurred. Please try again.', 'long', 'center');
+        		App.showToast('Network error occurred. Please try again.', 'long', 'top');
         		App.hideLoading();
         		$state.go('app.listing');
         	}
@@ -605,7 +600,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
 	    	}
 	    	$scope.shoppingLists.splice(indexForDelete, 1);
     		App.saveShoppinglist($scope.shoppingLists);
-    		App.showToast('Shopping deleted successfully', 'long', 'center');
+    		App.showToast('Shopping deleted successfully', 'long', 'top');
     	}
         
         $scope.newShopping = function() {
@@ -618,7 +613,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         var updateShopping = function(newShoppingName, shopping) {
         	shopping.shoppinglist_name = newShoppingName;
         	shopping.sync = 1; // make shopping to be sync to save on server
-        	App.showToast('Shopping name updated', 'long', 'center');
+        	App.showToast('Shopping name updated', 'long', 'top');
         	App.saveShoppinglist($scope.shoppingLists);
         }
         
@@ -626,7 +621,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
         	var newShoppinglist = App.newShoppinglist(newShoppingName);
         	$scope.shoppingLists.unshift(newShoppinglist);
         	App.saveShoppinglist($scope.shoppingLists);
-        	App.showToast('New shopping created', 'long', 'center');
+        	App.showToast('New shopping created', 'long', 'top');
         	$location.path('showitems/0/' + newShoppingName);
         }
     }])
@@ -711,7 +706,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
 	        	$scope.shoppingLists[$scope.shoppingIndex].items.unshift(newShoppinglist);
 	        	$scope.shoppingLists[$scope.shoppingIndex].remaining_item++;
 	        	App.saveShoppinglist($scope.shoppingLists);
-	        	App.showToast('Item added successfully', 'short', 'center');
+	        	App.showToast('Item added successfully', 'short', 'top');
 	        	if (!addAnother) {
 	        		$scope.item = {unit:'pk', notes:''};
 	        		$scope.hideModal();
@@ -743,7 +738,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
     		    $scope.shoppingLists[$scope.shoppingIndex]['items'][editIndex] = $scope.editItem;
 	        	App.saveShoppinglist($scope.shoppingLists);
 	        	editIndex = null;
-	        	App.showToast('Item updated successfully', 'short', 'center');
+	        	App.showToast('Item updated', 'short', 'top');
 	        	$scope.submitted = false;
 	        	$scope.hideEditModal();
 	       	} else {
@@ -786,7 +781,7 @@ controllerModule.controller('AppController', ["$scope", "$state", "App", "Remote
 	    	
 	    	$scope.shoppingLists[$scope.shoppingIndex]['items'].splice(deleteIndex, 1);
     		App.saveShoppinglist($scope.shoppingLists);
-    		App.showToast('Item deleted successfully', 'long', 'center');
+    		App.showToast('Item deleted successfully', 'long', 'top');
 		}
 	  	
 	  	// A delete confirm dialog

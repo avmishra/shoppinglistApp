@@ -139,7 +139,7 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 				items: [],
 				remaining_item: 0,
 				sync: 0,
-				created_at: date.getFullYear() + '-' + (date.getMonth()+1) + '-' +date.getDate()
+				created_at: date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2)
 			};
 	    },
 	    deleteAllShoppinglist: function() {
@@ -181,7 +181,7 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 				notes: notes,
 				picked: 0,
 				sync: 0,
-				created_at: date.getFullYear() + '-' + (date.getMonth()+1) + '-' +date.getDate()
+				created_at: date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2)
 			};
 	    },
 	    getDeletedShoppinglistItems: function(){
@@ -224,6 +224,12 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
 	    },
 	    hideLoading : function() {
 	    	$ionicLoading.hide();
+	    },
+	    isLoggedIn: function() {
+	    	if(this.getUserDetails() == null) {
+	    		return false;
+	    	}
+	    	return true;
 	    }
 	  }
 	}])
@@ -241,19 +247,24 @@ angular.module('shoppinglist', ['ionic', 'shoppinglist.controllers','ngCordova',
     	$ionicPlatform.registerBackButtonAction(function () {
     	    $ionicSideMenuDelegate.toggleLeft();
     	}, 100);
-    	
         $rootScope.$on('$stateChangeStart', function(event, toState) {
         	var userDetails = App.getUserDetails();
         	$rootScope.logged_in = false;
-            if (toState.name !== "app.login" && toState.name !== "app.logout"
-            	&& toState.name !== "app.loading" && toState.name !== "app.signup"
-            	&& toState.name !== "app.emailVerification" && toState.name !== "app.aboutus"
-            	&& toState.name !== "app.forgotpassword" && toState.name !== "app.help"
-            	&& (userDetails == null || userDetails.logged_in == 0)) {
-                //console.log('You are not logged in');
-                $state.go('app.login');
-                event.preventDefault();
-            }
+//            if (toState.name !== "app.login" && toState.name !== "app.logout"
+//            	&& toState.name !== "app.loading" && toState.name !== "app.signup"
+//            	&& toState.name !== "app.emailVerification" && toState.name !== "app.aboutus"
+//            	&& toState.name !== "app.forgotpassword" && toState.name !== "app.help"
+//            	&& (userDetails == null || userDetails.logged_in == 0)) {
+//                //console.log('You are not logged in');
+//                $state.go('app.login');
+//                event.preventDefault();
+//            }
+        	if (toState.name == "app.sync" && (userDetails == null || userDetails.logged_in == 0)) {
+        		App.showToast('Please login to sync the data on server.', 'long', 'top');
+    			$state.go('app.login');
+    			event.preventDefault();
+        	}
+        	
             // hide session menu item
             if (userDetails !== null && userDetails.logged_in == 1) {
             	$rootScope.logged_in = true;
